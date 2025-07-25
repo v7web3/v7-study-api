@@ -247,9 +247,9 @@ async function importSeedData() {
   });
 
   // Create all entries
-  await importCategories();
-  await importAuthors();
-  await importArticles();
+  // await importCategories();
+  // await importAuthors();
+  // await importArticles();
   await importGlobal();
   await importAbout();
 }
