@@ -3,7 +3,7 @@ module.exports = ({env}) => {
   console.log('=== Environment Variables Debug ===');
   console.log('MAILERSEND_API_KEY:', env('MAILERSEND_API_KEY') ? 'SET' : 'NOT SET');
   console.log('AWS_ACCESS_KEY_ID:', env('AWS_ACCESS_KEY_ID') ? 'SET' : 'NOT SET');
-  console.log('AWS_ACCESS_SECRET:', env('AWS_ACCESS_SECRET') ? 'SET' : 'NOT SET');
+  console.log('AWS_SECRET_ACCESS_KEY:', env('AWS_SECRET_ACCESS_KEY') ? 'SET' : 'NOT SET');
   console.log('AWS_REGION:', env('AWS_REGION'));
   console.log('AWS_BUCKET:', env('AWS_BUCKET'));
   console.log('AWS_ACL:', env('AWS_ACL', 'public-read'));
@@ -29,7 +29,7 @@ module.exports = ({env}) => {
         provider: 'aws-s3',
         providerOptions: {
           accessKeyId: env('AWS_ACCESS_KEY_ID'),
-          secretAccessKey: env('AWS_ACCESS_SECRET'),
+          secretAccessKey: env('AWS_SECRET_ACCESS_KEY'),
           region: env('AWS_REGION'),
           params: {
             ACL: env('AWS_ACL', 'public-read'),
