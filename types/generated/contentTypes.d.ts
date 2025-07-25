@@ -373,35 +373,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutAbout extends Struct.SingleTypeSchema {
-  collectionName: 'abouts';
-  info: {
-    description: 'Write about yourself and the content you create';
-    displayName: 'About';
-    pluralName: 'abouts';
-    singularName: 'about';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiAnswerAnswer extends Struct.CollectionTypeSchema {
   collectionName: 'answers';
   info: {
@@ -503,38 +474,6 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
-  collectionName: 'globals';
-  info: {
-    description: 'Define global settings';
-    displayName: 'Global';
-    pluralName: 'globals';
-    singularName: 'global';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    defaultSeo: Schema.Attribute.Component<'shared.seo', false>;
-    favicon: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::global.global'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    siteDescription: Schema.Attribute.Text & Schema.Attribute.Required;
-    siteName: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
   collectionName: 'questions';
   info: {
@@ -549,7 +488,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    is_active: Schema.Attribute.Boolean &
+    isActive: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -560,6 +499,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     question: Schema.Attribute.JSON & Schema.Attribute.Required;
+    tests: Schema.Attribute.Relation<'manyToMany', 'api::test.test'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -593,6 +533,40 @@ export interface ApiSummarySummary extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTestTest extends Struct.CollectionTypeSchema {
+  collectionName: 'tests';
+  info: {
+    displayName: 'Test';
+    pluralName: 'tests';
+    singularName: 'test';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    isFinish: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::test.test'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    questions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::question.question'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1083,6 +1057,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    tests: Schema.Attribute.Relation<'oneToMany', 'api::test.test'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1105,13 +1080,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::about.about': ApiAboutAbout;
       'api::answer.answer': ApiAnswerAnswer;
       'api::book.book': ApiBookBook;
       'api::category.category': ApiCategoryCategory;
-      'api::global.global': ApiGlobalGlobal;
       'api::question.question': ApiQuestionQuestion;
       'api::summary.summary': ApiSummarySummary;
+      'api::test.test': ApiTestTest;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

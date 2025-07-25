@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tests",
+  "info": {
+    "singularName": "test",
+    "pluralName": "tests",
+    "displayName": "Test"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tests"
+    },
+    "questions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::question.question",
+      "inversedBy": "tests"
+    },
+    "description": {
+      "type": "string"
+    },
+    "isFinish": {
+      "type": "boolean"
+    }
+  }
+}

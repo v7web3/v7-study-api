@@ -15,10 +15,16 @@
       "type": "json",
       "required": true
     },
-    "is_active": {
+    "isActive": {
       "type": "boolean",
       "required": true,
       "default": true
+    },
+    "tests": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::test.test",
+      "mappedBy": "questions"
     }
   }
 }
