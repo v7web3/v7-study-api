@@ -12,6 +12,7 @@
     "strapi": "strapi"
   },
   "dependencies": {
+    "@redon2inc/strapi-plugin-refresh-token": "^0.1.4",
     "@strapi/plugin-cloud": "5.15.0",
     "@strapi/plugin-documentation": "^5.19.0",
     "@strapi/plugin-users-permissions": "5.15.0",

@@ -77,6 +77,14 @@
       "relation": "oneToMany",
       "target": "api::test.test",
       "mappedBy": "user"
+    },
+    "refresh_tokens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::refresh-token.token",
+      "mappedBy": "user",
+      "private": true,
+      "configurable": false
     }
   }
 }
